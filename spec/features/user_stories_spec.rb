@@ -45,6 +45,21 @@ describe 'User Stories' do
 
     # As an air traffic controller
     # To ensure safety
+    # I want to ensure a flying plane cannot take off or be in the airport
+    it 'flying planes cannot take off' do
+      airport.land(plane)
+      flying_plane = airport.take_off(plane)
+      expect { flying_plane.take_off }.to raise_error "Plane already inflight"
+    end
+
+    it 'flying planes cannot be in an airport' do
+      airport.land(plane)
+      flying_plane = airport.take_off(plane)
+      expect { flying_plane.airport }.to raise_error "Plane is inflight"
+    end
+
+    # As an air traffic controller
+    # To ensure safety
     # I want to prevent landing when the airport is full
     context 'when airport is full' do
       it 'prevents plane landing' do
