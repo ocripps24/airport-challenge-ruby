@@ -1,12 +1,13 @@
 describe 'User Stories' do
 
-  let(:airport) { Airport.new(20) }
+  let(:airport) { Airport.new(20, weather_reporter) }
   let(:plane) { Plane.new }
+  let(:weather_reporter) { WeatherReporter.new }
 
   context 'when not stormy' do
 
     before do
-      allow(airport).to receive(:stormy?) { false }
+      allow(weather_reporter).to receive(:stormy?) { false }
     end
 
     # As an air traffic controller
@@ -30,7 +31,7 @@ describe 'User Stories' do
   # I want to prevent landing when the airport is full
   context 'when airport is full' do
     it 'prevents plane landing' do
-      allow(airport).to receive(:stormy?) { false }
+      allow(weather_reporter).to receive(:stormy?) { false }
       20.times do
         airport.land(plane)
       end
@@ -41,7 +42,7 @@ describe 'User Stories' do
   context 'when weather is stormy' do
 
     before do
-      allow(airport).to receive(:stormy?) { true }
+      allow(weather_reporter).to receive(:stormy?) { true }
     end
 
     # As an air traffic controller
