@@ -6,18 +6,33 @@ describe Airport do
   let(:plane) { double :plane }
 
   describe '#land' do
+    context 'when not stormy' do
 
-    it 'instructs a plane to land' do
-      expect(airport).to respond_to(:land).with(1).argument
+      before do
+        allow(airport).to receive(:stormy?) { false }
+      end
+
+      it 'instructs a plane to land' do
+        expect(airport).to respond_to(:land).with(1).argument
+      end
+
+      context 'when full' do
+        it 'raises an error' do
+          20.times do
+            airport.land(plane)
+          end
+          expect { airport.land(plane) }.to raise_error "Cannot land plane: airport full"
+        end
+      end
     end
 
-    context 'when full' do
+    context 'when stormy' do
+
       it 'raises an error' do
-        20.times do
-          airport.land(plane)
-        end
-        expect { airport.land(plane) }.to raise_error "Cannot land plane: airport full"
+        allow(airport).to receive(:stormy?) { true }
+        expect { airport.land(plane) }.to raise_error "Cannot land plane: weather stormy"
       end
+
     end
 
   end
