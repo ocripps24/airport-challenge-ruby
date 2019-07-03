@@ -38,28 +38,32 @@ describe 'User Stories' do
     end
   end
 
-  # As an air traffic controller
-  # To ensure safety
-  # I want to prevent landing when weather is stormy
   context 'when weather is stormy' do
-    it 'prevents planes landing' do
+
+    before do
       allow(airport).to receive(:stormy?) { true }
+    end
+
+    # As an air traffic controller
+    # To ensure safety
+    # I want to prevent landing when weather is stormy
+    it 'prevents planes landing' do
       expect { airport.land(plane) }.to raise_error "Cannot land plane: weather stormy"
+    end
+
+    # As an air traffic controller
+    # To ensure safety
+    # I want to prevent takeoff when weather is stormy
+    it 'prevents planes taking off' do
+      expect { airport.take_off(plane) }.to raise_error "Cannot take off plane: weather stormy"
     end
   end
 
-  # As an air traffic controller
-  # To ensure safety
-  # I want to prevent takeoff when weather is stormy
 end
 
 # As an air traffic controller
 # So I can get passengers on the way to their destination
 # I want to instruct a plane to take off from an airport and confirm that it is no longer in the airport
-
-# As an air traffic controller
-# To ensure safety
-# I want to prevent landing when the airport is full
 
 # As the system designer
 # So that the software can be used for many different airports
