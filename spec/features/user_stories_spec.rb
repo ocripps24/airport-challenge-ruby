@@ -39,7 +39,10 @@ describe 'User Stories' do
     # I would like a default airport capacity that can be overridden as appropriate
     it 'airports have a default capacity' do
       default_airport = Airport.new(weather_reporter)
-      Airport::DEFAULT_CAPACITY.times { default_airport.land(plane) }
+      Airport::DEFAULT_CAPACITY.times do
+        the_plane = Plane.new
+        default_airport.land(the_plane)
+      end
       expect { default_airport.land(plane) }.to raise_error "Cannot land plane: airport full"
     end
 
@@ -47,15 +50,24 @@ describe 'User Stories' do
     # To ensure safety
     # I want to ensure a flying plane cannot take off or be in the airport
     it 'flying planes cannot take off' do
-      airport.land(plane)
-      flying_plane = airport.take_off(plane)
-      expect { flying_plane.take_off }.to raise_error "Plane already inflight"
+      expect { plane.take_off }.to raise_error "Plane already inflight"
     end
 
     it 'flying planes cannot be in an airport' do
+      expect { plane.airport }.to raise_error "Plane is inflight"
+    end
+
+    # As an air traffic controller
+    # To ensure safety
+    # I want to ensure a landed plane cannot land and must be in a the airport
+    it 'non-flying planes cannot land' do
       airport.land(plane)
-      flying_plane = airport.take_off(plane)
-      expect { flying_plane.airport }.to raise_error "Plane is inflight"
+      expect { plane.land(airport) }.to raise_error "Plane has already landed"
+    end
+
+    it 'non-flying planes must be in an airport' do
+      airport.land(plane)
+      expect(plane.airport).to eq airport
     end
 
     # As an air traffic controller
@@ -65,7 +77,8 @@ describe 'User Stories' do
       it 'prevents plane landing' do
         allow(weather_reporter).to receive(:stormy?) { false }
         20.times do
-          airport.land(plane)
+          the_plane = Plane.new
+          airport.land(the_plane)
         end
         expect { airport.land(plane) }.to raise_error "Cannot land plane: airport full"
       end

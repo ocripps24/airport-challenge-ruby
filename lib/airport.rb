@@ -1,4 +1,5 @@
-require 'weather_reporter'
+require_relative 'weather_reporter'
+require_relative 'plane'
 
 class Airport
 
@@ -14,13 +15,15 @@ class Airport
     raise "Cannot land plane: airport full" if full?
     raise "Cannot land plane: weather stormy" if stormy?
 
+    plane.land(self)
     @hangar << plane
   end
 
   def take_off(plane)
     raise "Cannot take off plane: weather stormy" if stormy?
     raise "Cannot take off: plane not present" unless at_airport?(plane)
-    
+
+    plane.take_off
     plane
   end
 
