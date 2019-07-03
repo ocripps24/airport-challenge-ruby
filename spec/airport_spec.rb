@@ -50,6 +50,12 @@ describe Airport do
         expect(airport).to respond_to(:take_off).with(1).argument
       end
 
+      it 'raises an error if plane not present' do
+        other_airport = described_class.new(20, weather_reporter)
+        other_airport.land(plane)
+        expect { airport.take_off(plane) }.to raise_error "Cannot take off: plane not present"
+      end
+
     end
 
     context 'when stormy' do
