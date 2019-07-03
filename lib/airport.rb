@@ -1,3 +1,5 @@
+require 'weather_reporter'
+
 class Airport
 
   def initialize(capacity)
@@ -23,7 +25,7 @@ class Airport
   end
 
   def stormy?
-    rand(1..6) > 4
+    WeatherReporter.stormy?
   end
 
 end
