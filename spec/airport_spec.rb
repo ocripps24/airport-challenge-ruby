@@ -80,6 +80,25 @@ describe Airport do
 
   end
 
+  describe '#planes' do
+
+    before do
+      allow(weather_reporter).to receive(:stormy?) { false }
+    end
+
+    it 'returns planes at the airport ' do
+      airport.land(plane)
+      expect(airport.hangar).to include plane
+    end
+
+    it 'does not return planes that have taken off' do
+      airport.land(plane)
+      airport.take_off(plane)
+      expect(airport.hangar).not_to include plane
+    end
+
+  end
+
   context 'defaults' do
 
     subject(:default_airport) { described_class.new(weather_reporter) }

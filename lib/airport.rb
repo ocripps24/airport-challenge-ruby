@@ -5,6 +5,8 @@ class Airport
 
   DEFAULT_CAPACITY = 20
 
+  attr_reader :hangar
+
   def initialize(weather_reporter, capacity = DEFAULT_CAPACITY)
     @weather_reporter = weather_reporter
     @capacity = capacity
@@ -24,6 +26,7 @@ class Airport
     raise "Cannot take off: plane not present" unless at_airport?(plane)
 
     plane.take_off
+    @hangar.pop
     plane
   end
 

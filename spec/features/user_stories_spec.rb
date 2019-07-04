@@ -71,6 +71,15 @@ describe 'User Stories' do
     end
 
     # As an air traffic controller
+    # So I can get passengers on the way to their destination
+    # I want to ensure a taken off plane is no longer in the airport
+    it 'taking off a plane removes it from that airport' do
+      airport.land(plane)
+      airport.take_off(plane)
+      expect(airport.hangar).not_to include plane 
+    end
+
+    # As an air traffic controller
     # To ensure safety
     # I want to prevent landing when the airport is full
     context 'when airport is full' do
@@ -108,8 +117,3 @@ describe 'User Stories' do
   end
 
 end
-
-# As an air traffic controller
-# So I can get passengers on the way to their destination
-# I want to instruct a plane to take off from an airport
-# and confirm that it is no longer in the airport
