@@ -18,7 +18,7 @@ class Airport
     raise "Cannot land plane: weather stormy" if stormy?
 
     plane.land(self)
-    @hangar << plane
+    add_plane(plane)
   end
 
   def take_off(plane)
@@ -26,22 +26,32 @@ class Airport
     raise "Cannot take off: plane not present" unless at_airport?(plane)
 
     plane.take_off
-    @hangar.pop
+    remove_plane
     plane
   end
 
   private
 
+  attr_reader :capacity, :weather_reporter
+
   def full?
-    @hangar.length >= @capacity
+    hangar.length >= capacity
   end
 
   def stormy?
-    @weather_reporter.stormy?
+    weather_reporter.stormy?
   end
 
   def at_airport?(plane)
-    @hangar.include?(plane)
+    hangar.include?(plane)
+  end
+
+  def add_plane(plane)
+    hangar << plane
+  end
+
+  def remove_plane
+    hangar.pop
   end
 
 end
